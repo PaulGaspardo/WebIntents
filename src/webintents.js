@@ -50,7 +50,7 @@
    */
   Intents.prototype.startActivity = function (intent, onResult) {
     var id = "intent" + new Date().valueOf();
-    var params = "directories=no,menubar=no,status=0,location=0,fullscreen=no";
+    var params = "directories=no,menubar=no,status=0,location=0,fullscreen=no,width=300,height=300";
     
     intent._id = id;
     intents[id] = { intent: intent }; 
@@ -267,9 +267,12 @@
       // We can handle postMessage.
       iframe = document.createElement("iframe");
       iframe.style.display = "none";
-      iframe.src = serverSource;
+
 
       addEventListener(iframe, "load", function() {
+        if(iframe.src != serverSource) {
+          iframe.src = serverSource;
+        }
         parseIntentsDocument();
         parseIntentsMetaData();
       }, false);
@@ -280,6 +283,7 @@
         var head = heads[0];
         addEventListener(head, "DOMNodeInserted", onIntentDOMAdded, false);
         head.appendChild(iframe);
+        iframe.src = serverSource;
       }
     }
 

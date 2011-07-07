@@ -1,3 +1,18 @@
+/*
+   Copyright 2011 Google Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 (function() {
   if(!!window.Intent) return;
 
@@ -10,7 +25,7 @@
     }
   };
 
-  if(document.location.host == "0.0.0.0:8000") {   var __WEBINTENTS_ROOT = "http://0.0.0.0:8080/"; } else {   var __WEBINTENTS_ROOT = "http://webintents.org/"; }
+  /*    Copyright 2011 Google Inc.     Licensed under the Apache License, Version 2.0 (the "License");    you may not use this file except in compliance with the License.    You may obtain a copy of the License at         http://www.apache.org/licenses/LICENSE-2.0     Unless required by applicable law or agreed to in writing, software    distributed under the License is distributed on an "AS IS" BASIS,    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    See the License for the specific language governing permissions and    limitations under the License. */ if(document.location.hostname == "0.0.0.0") {   var __WEBINTENTS_ROOT = "http://0.0.0.0:8080/"; } else {   var __WEBINTENTS_ROOT = "http://webintents.org/"; }
  
   var server = __WEBINTENTS_ROOT; 
   var serverSource = server + "intents.html";
@@ -35,7 +50,7 @@
    */
   Intents.prototype.startActivity = function (intent, onResult) {
     var id = "intent" + new Date().valueOf();
-    var params = "directories=no,menubar=no,status=0,location=0,fullscreen=no";
+    var params = "directories=no,menubar=no,status=0,location=0,fullscreen=no,width=300,height=300";
     
     intent._id = id;
     intents[id] = { intent: intent }; 
@@ -252,9 +267,12 @@
       // We can handle postMessage.
       iframe = document.createElement("iframe");
       iframe.style.display = "none";
-      iframe.src = serverSource;
+
 
       addEventListener(iframe, "load", function() {
+        if(iframe.src != serverSource) {
+          iframe.src = serverSource;
+        }
         parseIntentsDocument();
         parseIntentsMetaData();
       }, false);
@@ -265,6 +283,7 @@
         var head = heads[0];
         addEventListener(head, "DOMNodeInserted", onIntentDOMAdded, false);
         head.appendChild(iframe);
+        iframe.src = serverSource;
       }
     }
 
